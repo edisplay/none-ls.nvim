@@ -57,6 +57,15 @@ describe("e2e", function()
     end)
 
     describe("code actions", function()
+        ---@param cmd lsp.Command
+        local function execute_command(cmd)
+            local client = vim.lsp.get_clients()[1]
+            if client.exec_cmd ~= nil then
+                client:exec_cmd(cmd)
+            else
+                vim.lsp.buf.execute_command(cmd)
+            end
+        end
         local actions, null_ls_action
         before_each(function()
             sources.register(builtins._test.toggle_line_comment)
@@ -81,19 +90,19 @@ describe("e2e", function()
         end)
 
         it("should apply code action", function()
-            vim.lsp.buf.execute_command(null_ls_action)
+            execute_command(null_ls_action)
 
             assert.equals(u.buf.content(nil, true), '-- print("I am a test file!")\n')
         end)
 
         it("should adapt code action based on params", function()
-            vim.lsp.buf.execute_command(null_ls_action)
+            execute_command(null_ls_action)
 
             actions = get_code_actions()
             null_ls_action = actions[1].result[1]
             assert.equals(null_ls_action.title, "Uncomment line")
 
-            vim.lsp.buf.execute_command(null_ls_action)
+            execute_command(null_ls_action)
             assert.equals(u.buf.content(nil, true), 'print("I am a test file!")\n')
         end)
 
