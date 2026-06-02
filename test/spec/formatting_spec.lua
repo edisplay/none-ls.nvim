@@ -36,7 +36,11 @@ describe("formatting", function()
         }
 
         diff.compute_diff.returns({})
-        lsp.get_active_clients.returns({})
+        if u.has_version("0.12") then
+            lsp.get_clients.returns({})
+        else
+            lsp.get_active_clients.returns({})
+        end
         u.make_params.returns({})
         api.nvim_create_buf.returns(mock_temp_bufnr)
         api.nvim_buf_is_loaded.returns(true)
