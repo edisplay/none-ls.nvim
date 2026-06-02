@@ -649,7 +649,7 @@ describe("e2e", function()
 
     -- https://github.com/neovim/neovim/commit/8260e4860b27a54a061bd8e2a9da23069993953a
     -- hover no longer supports handler
-    if not vim.fn.has("nvim-0.11") == 1 then
+    if not u.has_version("0.11") then
         describe("hover", function()
             local mock_handler = require("luassert.stub").new()
 

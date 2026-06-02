@@ -3,6 +3,7 @@ local mock = require("luassert.mock")
 
 local c = require("null-ls.config")
 local methods = require("null-ls.methods")
+local u = require("null-ls.utils")
 local tu = require("null-ls.utils.test")
 
 local lsp = mock(vim.lsp, true)
@@ -111,7 +112,7 @@ describe("client", function()
                 local supports_method
                 before_each(function()
                     on_init(mock_client)
-                    if vim.fn.has("nvim-0.11") == 1 then
+                    if u.has_version("0.11") then
                         supports_method = function(method)
                             return mock_client:supports_method(method)
                         end
@@ -132,7 +133,7 @@ describe("client", function()
                     assert.equals(is_supported, true)
                 end)
 
-                if vim.fn.has("nvim-0.11") == 1 then
+                if u.has_version("0.11") then
                     it("can still use legacy . syntax", function()
                         can_run.returns(true)
                         local is_supported = mock_client.supports_method(methods.lsp.CODE_ACTION)
@@ -359,7 +360,7 @@ describe("client", function()
 
             client.notify_client(mock_method, mock_params)
 
-            if vim.fn.has("nvim-0.11") == 1 then
+            if u.has_version("0.11") then
                 assert.stub(notify).was_called_with(mock_client, mock_method, mock_params)
             else
                 assert.stub(notify).was_called_with(mock_method, mock_params)

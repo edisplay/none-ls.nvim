@@ -1,4 +1,5 @@
 local c = require("null-ls.config")
+local u = require("null-ls.utils")
 local log = require("null-ls.logger")
 local methods = require("null-ls.methods")
 local sources = require("null-ls.sources")
@@ -40,12 +41,12 @@ end
 local make_backdrop = function(backdrop)
     -- adapted from `lazy.nvim`
     local normal, has_bg
-    if vim.fn.has("nvim-0.9.0") == 0 then
-        normal = vim.api.nvim_get_hl_by_name("Normal", true)
-        has_bg = normal and normal.background ~= nil
-    else
+    if u.has_version("0.9.0") then
         normal = vim.api.nvim_get_hl(0, { name = "Normal" })
         has_bg = normal and normal.bg ~= nil
+    else
+        normal = vim.api.nvim_get_hl_by_name("Normal", true)
+        has_bg = normal and normal.background ~= nil
     end
 
     if has_bg and backdrop and backdrop < 100 and vim.o.termguicolors then

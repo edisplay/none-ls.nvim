@@ -104,7 +104,7 @@ local on_init = function(new_client, initialize_result)
     end
 
     new_client.supports_method = supports_method
-    if vim.fn.has("nvim-0.11") == 1 then
+    if u.has_version("0.11") then
         method_wrapper(new_client, vim.lsp.client, "supports_method")
     end
 
@@ -237,7 +237,7 @@ M.notify_client = function(method, params)
         return
     end
 
-    if vim.fn.has("nvim-0.11") == 1 then
+    if u.has_version("0.11") then
         client:notify(method, params)
     else
         ---@diagnostic disable-next-line: param-type-mismatch

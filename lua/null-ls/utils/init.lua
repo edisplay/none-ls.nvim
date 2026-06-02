@@ -371,7 +371,7 @@ M.get_vcs_root = function()
 end
 
 M.validate = function(validators)
-    if vim.fn.has("nvim-0.11.0") ~= 1 then
+    if not M.has_version("0.11.0") then
         vim.validate(validators)
         return
     end
